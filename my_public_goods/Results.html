@@ -1,0 +1,13 @@
+{{ block title }}
+    結果
+{{ endblock }}
+
+{{ block content }}
+    <p>
+        あなたは {{ player.contribution }} 投資しました。
+        全投資額は {{ group.total_contribution }} でした。
+        公共財から得られる1人あたりの利益は {{ group.individual_share }} です。
+        よって、あなたの利得は {{ player.payoff }} となります。
+    </p>
+    {{ next_button }}
+{{ endblock }}

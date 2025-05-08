@@ -1,0 +1,33 @@
+{{ block title }}
+    応答者の決定 - ラウンド {{ round_number }}
+{{ endblock }}
+
+{{ block content }}
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">あなたは応答者です</h5>
+            <p class="card-text">現在の予算額: {{ current_budget }}</p>
+            <p class="card-text">
+                {{ if player.id_in_group == 1 }}
+                    プレイヤーBはあなた（プレイヤーA）に {{ proposal }} を提案しました。
+                    あなたが受け入れると、あなたは {{ remainder }} を受け取り、プレイヤーBは {{ proposal }} を受け取ります。
+                {{ else }}
+                    プレイヤーAはあなた（プレイヤーB）に {{ proposal }} を提案しました。
+                    あなたが受け入れると、あなたは {{ remainder }} を受け取り、プレイヤーAは {{ proposal }} を受け取ります。
+                {{ endif }}
+            </p>
+            <p class="card-text">
+                あなたはこの提案を受け入れますか？
+            </p>
+            <p class="card-text text-danger">
+                提案を拒否すると、次のラウンドでは役割が入れ替わり、
+                予算は {{ current_budget }} から {{ next_budget }} に減少します。
+            </p>
+        </div>
+    </div>
+
+    {{ formfields }}
+    {{ next_button }}
+
+{{ endblock }}
