@@ -77,6 +77,8 @@ class Player(BasePlayer):
     # 合意後の最終的な獲得金額
     final_payoff = models.CurrencyField()
 
+
+
 # ページクラス
 class Proposer(Page):
     form_model = 'group'
