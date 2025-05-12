@@ -104,14 +104,22 @@ class Group(BaseGroup):
                     else:
                         player.payoff = -player.total_investment
                 
-                # プレイヤーの累積値を更新
-                player.cumulative_payoff = player.in_round(player.round_number - 1).cumulative_payoff + player.payoff if player.round_number > 1 else player.payoff
+                # プレイヤーの累積値を更新（Currencyからintに変換）
+                previous_cumulative = 0
+                if player.round_number > 1:
+                    previous_cumulative = player.in_round(player.round_number - 1).cumulative_payoff
+                
+                # payoffをint型に変換して追加
+                player.cumulative_payoff = previous_cumulative + int(player.payoff)
         else:
             # 失敗した場合は次のラウンドに進む（利益は確定しない）
             for player in self.get_players():
                 player.calculate_total_investment()
                 player.payoff = 0
-                player.cumulative_payoff = player.in_round(player.round_number - 1).cumulative_payoff if player.round_number > 1 else 0
+                if player.round_number > 1:
+                    player.cumulative_payoff = player.in_round(player.round_number - 1).cumulative_payoff
+                else:
+                    player.cumulative_payoff = 0
 
 
 class Player(BasePlayer):
@@ -166,7 +174,6 @@ class WaitForAll(WaitPage):
 
 class ResultsWaitPage(WaitPage):
     """結果を計算"""
-    # after_all_players_arrive = 'set_payoffs'
     def after_all_players_arrive(self):
         self.group.set_payoffs()
 
