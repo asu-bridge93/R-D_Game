@@ -1,0 +1,48 @@
+{{ block title }}
+R&D投資ゲーム：投資決定（{{ round_number }}年目）
+{{ endblock }}
+
+{{ block content }}
+<div class="card mb-3">
+    <div class="card-header">
+        あなたの現在の状況
+    </div>
+    <div class="card-body">
+        <p>現在のラウンド：{{ round_number }}年目</p>
+        <p>これまでの投資額合計：{{ total_investment }}億円</p>
+        <p>現在の累積利益：{{ cumulative_payoff }}億円</p>
+        <p>条件：
+            <strong>
+                {% if is_winner_takes_all %}
+                    Winner Takes All
+                {% else %}
+                    Spill Over
+                {% endif %}
+            </strong>
+        </p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        投資決定
+    </div>
+    <div class="card-body">
+        <p>
+            あなたには5枚のカードがあります。各カードは50億円の価値を持ちます。<br>
+            R&D投資に使用するカードの枚数を選択してください。
+        </p>
+        
+        {{ formfields }}
+        
+        <div class="form-text">
+            投資額が多いほどグループの成功確率が高まり、あなたがR&Dに成功する確率も高まります。
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary btn-large next-button">
+    決定する
+</button>
+
+{{ endblock }}

@@ -14,6 +14,20 @@ SESSION_CONFIGS = [
         num_demo_participants=4,
         app_sequence=['my_public_goods'],
     ),
+        dict(
+        name='r_and_d_game_winner_takes_all',
+        display_name="R&D Investment Game - Winner Takes All",
+        num_demo_participants=12,
+        app_sequence=['r_and_d_game_winner_takes_all'],
+        winner_takes_all=True,
+    ),
+    dict(
+        name='r_and_d_game_spillover',
+        display_name="R&D Investment Game - Spill Over",
+        num_demo_participants=12,
+        app_sequence=['r_and_d_game_spillover'],
+        spill_over=True,
+    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
