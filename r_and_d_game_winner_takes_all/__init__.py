@@ -36,6 +36,7 @@ class Subsession(BaseSubsession):
         winner_takes_all = self.session.config.get('winner_takes_all', True)
         for p in self.get_players():
             p.participant.vars['winner_takes_all'] = winner_takes_all
+
 class Group(BaseGroup):
     total_cards_invested = models.IntegerField(min=0, max=Constants.players_per_group * Constants.cards_per_player)
     success_probability = models.FloatField()
