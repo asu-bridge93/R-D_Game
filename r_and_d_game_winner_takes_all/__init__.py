@@ -36,8 +36,6 @@ class Subsession(BaseSubsession):
         winner_takes_all = self.session.config.get('winner_takes_all', True)
         for p in self.get_players():
             p.participant.vars['winner_takes_all'] = winner_takes_all
-
-
 class Group(BaseGroup):
     total_cards_invested = models.IntegerField(min=0, max=Constants.players_per_group * Constants.cards_per_player)
     success_probability = models.FloatField()
@@ -88,24 +86,23 @@ class Group(BaseGroup):
             
             # 各プレイヤーの利益を計算
             for i, player in enumerate(self.get_players()):
-                # ラウンドの累積投資額を計算
+                # 累積投資額も計算（参照用）
                 player.calculate_total_investment()
                 
                 # セッション設定を取得
                 is_winner_takes_all = player.participant.vars.get('winner_takes_all', True)
                 
                 if i == self.successful_player:
-                    # 成功したプレイヤー
-                    player.payoff = Constants.success_reward - player.total_investment
+                    # 成功したプレイヤー: 報酬から今回の投資額のみを差し引く
+                    player.payoff = Constants.success_reward - player.cards_invested*50
                 else:
                     # 失敗したプレイヤー
                     if is_winner_takes_all:
-                        player.payoff = -player.total_investment
+                        player.payoff = -player.cards_invested*50  # 今回の投資額のみが損失
                     else:  # SpillOver条件
-                        player.payoff = Constants.spillover_reward - player.total_investment
+                        player.payoff = Constants.spillover_reward - player.cards_invested
                 
                 # プレイヤーの累積値を更新
-                # player.cumulative_payoff = player.in_round(player.round_number - 1).cumulative_payoff + player.payoff if player.round_number > 1 else player.payoff
                 previous_cumulative = 0
                 if player.round_number > 1:
                     previous_cumulative = player.in_round(player.round_number - 1).cumulative_payoff
@@ -113,16 +110,21 @@ class Group(BaseGroup):
                 # payoffをint型に変換して追加
                 player.cumulative_payoff = previous_cumulative + int(player.payoff)
         else:
-            # 失敗した場合は次のラウンドに進む（利益は確定しない）
+            # 失敗した場合も投資分は損失となる
             for player in self.get_players():
+                # 今回のラウンドまでの累積投資額を計算
                 player.calculate_total_investment()
-                player.payoff = 0
-                # player.cumulative_payoff = player.in_round(player.round_number - 1).cumulative_payoff if player.round_number > 1 else 0
+                
+                # 失敗した場合の損失計算 (今回のラウンドの投資額のみを損失として計上)
+                player.payoff = -player.cards_invested*50
+                
+                # 累積利益の更新
+                previous_cumulative = 0
                 if player.round_number > 1:
-                    player.cumulative_payoff = player.in_round(player.round_number - 1).cumulative_payoff
-                else:
-                    player.cumulative_payoff = 0
-
+                    previous_cumulative = player.in_round(player.round_number - 1).cumulative_payoff
+                
+                # 現在の損失を累積利益に反映
+                player.cumulative_payoff = previous_cumulative + int(player.payoff)
 
 class Player(BasePlayer):
     cards_invested = models.IntegerField(min=0, max=Constants.cards_per_player, label="R&Dに投資するカードの枚数を選択してください（0〜5枚）")
