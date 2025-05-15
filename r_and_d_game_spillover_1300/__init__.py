@@ -10,7 +10,7 @@ R&D Investment Game - Companies make decisions on R&D investments with different
 class Constants(BaseConstants):
     name_in_url = 'r_and_d_game_spillover_1300'
     players_per_group = 4
-    num_rounds = 1
+    num_rounds = 10
     
     # 各プレイヤーの初期カード枚数
     cards_per_player = 5
