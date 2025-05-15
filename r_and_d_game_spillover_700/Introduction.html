@@ -35,30 +35,16 @@ R&D投資ゲーム：説明
             <li>あなたが投資したカードの枚数が多いほど、成功企業に選ばれる確率が高くなります。</li>
             <li>現在の条件：
                 <strong>
-                    {% if is_winner_takes_all %}
-                        Winner Takes All
-                    {% else %}
-                        Spill Over
-                    {% endif %}
+                    Spill Over
                 </strong>
             </li>
         </ul>
-        
         <h5>利益計算</h5>
-        {% if is_winner_takes_all %}
-        <p><strong>勝者総取り条件：</strong></p>
-        <ul>
-            <li>R&Dに成功した企業：{{ success_reward }}億円 - 投資額</li>
-            <li>R&Dに失敗した企業：- 投資額</li>
-        </ul>
-        {% else %}
         <p><strong>スピルオーバー条件：</strong></p>
         <ul>
             <li>R&Dに成功した企業：{{ success_reward }}億円 - 投資額</li>
             <li>R&Dに失敗した企業：{{ spillover_reward }}億円 - 投資額</li>
         </ul>
-        {% endif %}
-        
         <h5>ゲームの進行</h5>
         <p>
             R&Dに成功した場合、利益が確定し次の商品開発に移ります。<br>

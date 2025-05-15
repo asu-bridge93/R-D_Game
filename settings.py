@@ -2,31 +2,26 @@ from os import environ
 
 
 SESSION_CONFIGS = [
-    dict(
-        name='practice',
-        display_name='繰り返し+割引ありの最後通牒ゲーム',
-        num_demo_participants=2,
-        app_sequence=['practice'],
+        dict(
+        name='r_and_d_game_spillover_1300',
+        display_name="R&D Investment Game １回目",
+        num_demo_participants=12,
+        app_sequence=['r_and_d_game_spillover_1300'],
+        spill_over=True,
     ),
-    dict(
-        name='my_public_goods',
-        display_name='My Public Goods',
-        num_demo_participants=4,
-        app_sequence=['my_public_goods'],
+        dict(
+        name='r_and_d_game_spillover_700',
+        display_name="R&D Investment Game ２回目",
+        num_demo_participants=12,
+        app_sequence=['r_and_d_game_spillover_700'],
+        spill_over=True,
     ),
         dict(
         name='r_and_d_game_winner_takes_all',
-        display_name="R&D Investment Game - Winner Takes All",
+        display_name="R&D Investment Game ３回目",
         num_demo_participants=12,
         app_sequence=['r_and_d_game_winner_takes_all'],
         winner_takes_all=True,
-    ),
-    dict(
-        name='r_and_d_game_spillover',
-        display_name="R&D Investment Game - Spill Over",
-        num_demo_participants=12,
-        app_sequence=['r_and_d_game_spillover'],
-        spill_over=True,
     ),
 ]
 

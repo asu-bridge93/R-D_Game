@@ -8,9 +8,8 @@ R&D投資ゲーム：結果（{{ round_number }}年目）
         グループの結果
     </div>
     <div class="card-body">
-        <p>グループ全体の投資カード枚数：{{ total_cards }}枚</p>
+        <p>グループ全体の投資カード枚数：<strong>{{ total_cards }}枚</strong></p>
         <p>R&D成功確率：{{ success_probability }}%</p>
-        <p>サイコロの目：{{ dice_roll }}</p>
         <p>
             <strong>
                 R&D結果：
@@ -21,9 +20,15 @@ R&D投資ゲーム：結果（{{ round_number }}年目）
                 {% endif %}
             </strong>
         </p>
-        
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        あなたの結果
+    </div>
+    <div class="card-body">
         {% if is_successful %}
-        <p>当選したプレイヤー：プレイヤー {{ successful_player_id }}</p>
         <p>
             <strong>
                 あなたは
@@ -35,31 +40,10 @@ R&D投資ゲーム：結果（{{ round_number }}年目）
             </strong>
         </p>
         {% endif %}
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">
-        あなたの結果
-    </div>
-    <div class="card-body">
-        <p>あなたの投資額合計：{{ total_investment }}億円</p>
-        
-        {% if is_successful %}
+        <p>去年あなたが投資したカードの枚数：{{ cards_invested }}枚</p>
+        <p>これまでのあなたの投資額合計：{{ total_investment }}億円</p>
         <p>今回の利益：{{ payoff }}億円</p>
         <p>累積利益：{{ cumulative_payoff }}億円</p>
-        
-        <h5>報酬条件
-            <strong>
-                Spill Over
-            </strong>
-        </h5>
-        <ul>
-            <li>成功企業：{{ success_reward }}億円 - 投資額</li>
-            <li>失敗企業：1300 億円 - 投資額</li>
-        </ul>        
-        <p>R&Dは失敗しました。次年度の投資決定に進みます。</p>
-        {% endif %}
     </div>
 </div>
 

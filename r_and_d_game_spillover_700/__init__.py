@@ -8,7 +8,7 @@ R&D Investment Game - Companies make decisions on R&D investments with different
 
 
 class Constants(BaseConstants):
-    name_in_url = 'r_and_d_game_winner_takes_all'
+    name_in_url = 'r_and_d_game_spillover_700'
     players_per_group = 4
     num_rounds = 1
     
@@ -19,7 +19,7 @@ class Constants(BaseConstants):
     # 成功時の報酬（億円）
     success_reward = 1500
     # SpillOver条件での失敗時の報酬（億円）
-    spillover_reward = 1300
+    spillover_reward = 700
     
     # 成功確率の閾値
     success_thresholds = {
@@ -33,9 +33,9 @@ class Constants(BaseConstants):
 class Subsession(BaseSubsession):
     def creating_session(self):
         # セッションの設定を取得し各プレイヤーの参加者変数に保存
-        winner_takes_all = self.session.config.get('winner_takes_all', True)
+        spill_over = self.session.config.get('spill_over', True)
         for p in self.get_players():
-            p.participant.vars['winner_takes_all'] = winner_takes_all
+            p.participant.vars['spill_over'] = spill_over
 
 class Group(BaseGroup):
     total_cards_invested = models.IntegerField(min=0, max=Constants.players_per_group * Constants.cards_per_player)
@@ -91,17 +91,15 @@ class Group(BaseGroup):
                 player.calculate_total_investment()
                 
                 # セッション設定を取得
-                is_winner_takes_all = player.participant.vars.get('winner_takes_all', True)
+                is_spill_over = player.participant.vars.get('spill_over', True)
                 
                 if i == self.successful_player:
                     # 成功したプレイヤー: 報酬から今回の投資額のみを差し引く
                     player.payoff = Constants.success_reward - player.cards_invested*50
                 else:
                     # 失敗したプレイヤー
-                    if is_winner_takes_all:
-                        player.payoff = -player.cards_invested*50  # 今回の投資額のみが損失
-                    else:  # SpillOver条件
-                        player.payoff = Constants.spillover_reward - player.cards_invested
+                    if is_spill_over:
+                        player.payoff = Constants.spillover_reward - player.cards_invested*50
                 
                 # プレイヤーの累積値を更新
                 previous_cumulative = 0
@@ -150,7 +148,7 @@ class Introduction(Page):
     
     def vars_for_template(self):
         return {
-            'is_winner_takes_all': self.participant.vars.get('winner_takes_all', True),
+            'is_spill_over': self.participant.vars.get('spill_over', True),
             'success_reward': Constants.success_reward,
             'spillover_reward': Constants.spillover_reward,
             'card_value': Constants.card_value,
@@ -168,7 +166,7 @@ class Investment(Page):
             'round_number': self.round_number,
             'total_investment': self.in_round(self.round_number - 1).total_investment if self.round_number > 1 else 0,
             'cumulative_payoff': self.in_round(self.round_number - 1).cumulative_payoff if self.round_number > 1 else 0,
-            'is_winner_takes_all': self.participant.vars.get('winner_takes_all', True),
+            'is_spill_over': self.participant.vars.get('spill_over', True),
         }
 
 
@@ -179,7 +177,6 @@ class WaitForAll(WaitPage):
 
 class ResultsWaitPage(WaitPage):
     """結果を計算"""
-    # after_all_players_arrive = 'set_payoffs'
     def after_all_players_arrive(self):
         self.group.set_payoffs()
 
@@ -195,7 +192,7 @@ class Results(Page):
             'is_successful': self.group.is_rd_successful,
             'successful_player_id': self.group.successful_player + 1 if self.group.is_rd_successful else None,
             'is_winner': self.id_in_group - 1 == self.group.successful_player if self.group.is_rd_successful else False,
-            'is_winner_takes_all': self.participant.vars.get('winner_takes_all', True),
+            'is_spill_over': self.participant.vars.get('spill_over', True),
             'payoff': self.payoff,
             'total_investment': self.total_investment,
             'cumulative_payoff': self.cumulative_payoff,
@@ -216,7 +213,7 @@ class FinalResults(Page):
             'cumulative_payoff': self.cumulative_payoff,
             'final_payoff': self.payoff,
             'total_investment': self.total_investment,
-            'is_winner_takes_all': self.participant.vars.get('winner_takes_all', True),
+            'is_spill_over': self.participant.vars.get('spill_over', True),
         }
 
 

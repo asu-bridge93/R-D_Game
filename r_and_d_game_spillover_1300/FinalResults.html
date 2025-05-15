@@ -1,0 +1,30 @@
+{{ block title }}
+R&D投資ゲーム：最終結果
+{{ endblock }}
+
+{{ block content }}
+<div class="card">
+    <div class="card-header">
+        最終結果
+    </div>
+    <div class="card-body">
+        <h4>ゲーム終了</h4>
+        <p>あなたの累積利益：{{ cumulative_payoff }}億円</p>
+        <p>最終投資額：{{ total_investment }}億円</p>
+        <p>条件：
+            <strong>
+                Spill Over
+            </strong>
+        </p>
+        
+        <div class="alert alert-info">
+            実験にご参加いただき、ありがとうございました。
+        </div>
+    </div>
+</div>
+
+<button class="btn btn-primary btn-large next-button">
+    終了
+</button>
+
+{{ endblock }}
