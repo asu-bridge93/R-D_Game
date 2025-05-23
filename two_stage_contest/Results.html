@@ -1,0 +1,71 @@
+{{ block title }}
+Round {{group.round_number}}: 結果
+{{ endblock }}
+
+{{ block content }}
+
+{{ if player.win_flg == 2 }}
+<div class="alert alert-warning">
+    <b>おめでとうございます。あなたはコンペで1位でした。</b>
+</div>
+{{ elif player.win_flg == 1}}
+<div class="alert alert-warning">
+    引き分けでした。
+</div>
+{{ else }}
+<div class="alert alert-primary">
+    残念ながら、あなたはコンペで2位でした。
+</div>
+{{ endif }}
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th colspan="2">今回の結果</th>
+        </tr>
+    </thead>
+    <tr>
+        <td><b>得られた報酬</b></td>
+        <td>{{player.reward}}</td>
+    </tr>
+    <tr>
+        <td><b>投入したエフォート</b></td>
+        <td>x={{player.effort}}</td>
+    </tr>
+    <tr>
+        <td><b>能力</b></td>
+        <td>a={{player.cost}}</td>
+    </tr>
+    <tr>
+        <td><b>利得</b></td>
+        <td>{{player.payoff}}</td>
+    </tr>
+    <tr>
+        <td><b>利得合計</b></td>
+        <td>{{total_payoff}}</td>
+    </tr>
+</table>
+
+{{ if group.round_number > 1}}
+<br>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th colspan="2">前回の結果</th>
+        </tr>
+    </thead>
+    <tr>
+        <td>順位</td>
+        <td>{{prev_state}}</td>
+    </tr>
+    <tr>
+        <td>選択したエフォート</td>
+        <td>x = {{prev_effort}}</td>
+    </tr>
+</table>
+<br>
+{{endif}}
+
+
+{{if group.round_number < C.NUM_ROUNDS }} {{ next_button }} {{endif}} {{ endblock }}

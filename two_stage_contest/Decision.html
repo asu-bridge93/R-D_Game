@@ -1,0 +1,139 @@
+{{ block title }}
+Round {{group.round_number}}: エフォート選択
+{{ endblock }}
+{{ block content }}
+
+{{ if group.round_number > 1}}
+<br>
+<div class="w-75 p-3">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="2">前回の結果</th>
+            </tr>
+        </thead>
+        <tr>
+            <td width="50%">順位</td>
+            <td>{{prev_state}}</td>
+        </tr>
+        <tr>
+            <td>選択したエフォート</td>
+            <td>x = {{prev_effort}}</td>
+        </tr>
+    </table>
+</div>
+{{endif}}
+
+<div class="w-75 p-3">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="2">報酬</th>
+            </tr>
+        </thead>
+        <tr>
+            <td width="75">1位</td>
+            <td>
+                {% if group.round_number == 1 %}
+                <b>基本報酬: 500</b>
+                <p class="text-muted small">
+                    エフォートが低いと、報酬が少なくなります。<br>
+                    a (能力)* x (エフォート)が400以上で最大報酬を獲得できます。<br>
+                    エフォートが少ないと、その分の報酬が2位に移ります。
+                </p>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>条件</th>
+                            <th>変化量</th>
+                            <th>最終報酬</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="color: green;">
+                            <td>400 ≤ a*x</td>
+                            <td>0</td>
+                            <td>500</td>
+                        </tr>
+                        <tr style="color: orange;">
+                            <td>300 ≤ a*x < 400</td>
+                            <td>-50</td>
+                            <td>450</td>
+                        </tr>
+                        <tr style="color: red;">
+                            <td>a*x < 300</td>
+                            <td>-150</td>
+                            <td>350</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% else %}
+                <b>基本報酬: 1500</b>
+                <p class="text-muted small">
+                    エフォートが低いと、報酬が少なくなります。<br>
+                    a (能力)* x (エフォート)が1400以上で最大報酬を獲得できます。エフォートが少ないと、その分の報酬が2位に移ります。
+                </p>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>条件</th>
+                            <th>変化量</th>
+                            <th>最終報酬</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="color: green;">
+                            <td>1400 ≤ a*x</td>
+                            <td>0</td>
+                            <td>1500</td>
+                        </tr>
+                        <tr style="color: orange;">
+                            <td>1300 ≤ a*x < 1400</td>
+                            <td>-100</td>
+                            <td>1400</td>
+                        </tr>
+                        <tr style="color: red;">
+                            <td>a*x < 1300</td>
+                            <td>-400</td>
+                            <td>1100</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>2位</td>
+            <td>
+                {% if group.round_number == 1 %}
+                <b>基本報酬: 0</b>
+                <p class="text-muted small">
+                    1位のエフォートが少ない場合、その分の報酬が2位に移ります。<br>
+                    1位のa (能力)* x (エフォート)が400以上になると、2位の報酬は0になります。
+                </p>
+                {% else %}
+                <b>基本報酬: 0</b>
+                <p class="text-muted small">
+                    1位のエフォートが少ない場合、その分の報酬が2位に移ります。<br>
+                    1位のa (能力)* x (エフォート)が1400以上になると2位の報酬は0になります。
+                </p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="w-75 p-3">
+                あなたの能力は a={{player.cost}} です。
+                {{ formfields }}
+                {{ next_button }}
+</div>
+
+
+
+<br><br>
+実験の内容（再掲）：
+{{include C.INSTRUCTION_CONTENTS}}
+
+
+{{ endblock }}

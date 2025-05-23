@@ -23,6 +23,12 @@ SESSION_CONFIGS = [
         app_sequence=['r_and_d_game_winner_takes_all'],
         winner_takes_all=True,
     ),
+        dict(
+        name="two_stage_contest",
+        display_name="Two-Stage Contest",
+        num_demo_participants=12,
+        app_sequence=['two_stage_contest'],
+    ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
